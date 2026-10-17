@@ -1,32 +1,94 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Website</title>
+  
+  <!-- Default/Placeholder Favicon -->
+  <link id="favicon" rel="icon" type="image/x-icon" href="https://fav.farm/🌐">
+
   <style>
     body {
       background: #101827;
       color: white;
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 70px 20px;
+      padding: 50px 20px;
     }
     h1 { color: #60a5fa; }
-    a {
+    
+    /* Settings Box */
+    .settings-card {
+      background: #1e293b;
+      padding: 24px;
+      border-radius: 12px;
+      display: inline-block;
+      margin-top: 20px;
+      border: 1px solid #334155;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .upload-btn {
       display: inline-block;
       background: #2563eb;
       color: white;
       padding: 12px 20px;
       border-radius: 8px;
       text-decoration: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+
+    .upload-btn:hover {
+      background: #1d4ed8;
     }
   </style>
 </head>
 <body>
+
   <h1>Welcome to My Website!</h1>
   <p>I built this website for free using GitHub.</p>
-  <a href="https://github.com/">Visit GitHub</a>
+
+  <!-- Settings Section -->
+  <div class="settings-card">
+    <h3>Website Settings</h3>
+    <p>Upload any image to change the browser tab icon:</p>
+    
+    <label for="favicon-upload" class="upload-btn">📁 Choose Favicon Image</label>
+    <input type="file" id="favicon-upload" accept="image/*">
+  </div>
+
+  <script>
+    const fileInput = document.getElementById('favicon-upload');
+    const faviconLink = document.getElementById('favicon');
+
+    // Load saved favicon from localStorage if it exists
+    const savedFavicon = localStorage.getItem('userFavicon');
+    if (savedFavicon) {
+      faviconLink.href = savedFavicon;
+    }
+
+    // Change favicon when a file is selected
+    fileInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const newFaviconUrl = event.target.result;
+          faviconLink.href = newFaviconUrl;
+          
+          // Save in browser storage so it stays when refreshing
+          localStorage.setItem('userFavicon', newFaviconUrl);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+
 </body>
 </html>
